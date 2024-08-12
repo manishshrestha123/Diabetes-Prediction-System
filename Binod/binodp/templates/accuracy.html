@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Model Accuracy{% endblock title %}
+
+{% block body %}
+<div class="content-container">
+    <h1 style="text-align:center; margin-left: 386px; margin-bottom: 20px">Model Accuracy</h1>
+    <form action="/accuracy" method="get">
+        <label for="model_select" style = "text-align: none; font-size: 45px">Select Model:</label>
+        <select id="model_select" name="model_select" style = "font-size: 45px">
+            <option value="SVM">SVM</option>
+            <option value="LR">LR</option>
+            <option value="Both">Both</option>
+        </select>
+        <input type="submit" value="Show Accuracy" style="font-size: 45px; margin-left:20px;">
+    </form>
+
+    {% if metrics %}
+        {% if selected_model == "Both" %}
+            <h2>Metrics for Both Models:</h2>
+            <h3>SVM Metrics:</h3>
+            <p>Precision: {{ metrics.SVM.precision }}</p>
+            <p>Recall: {{ metrics.SVM.recall }}</p>
+            <p>F1 Score: {{ metrics.SVM.f1_score }}</p>
+            <p>Accuracy: {{ metrics.SVM.accuracy }}</p>
+            <h3>LR Metrics:</h3>
+            <p>Precision: {{ metrics.LR.precision }}</p>
+            <p>Recall: {{ metrics.LR.recall }}</p>
+            <p>F1 Score: {{ metrics.LR.f1_score }}</p>
+            <p>Accuracy: {{ metrics.LR.accuracy }}</p>
+        {% else %}
+            <h2>Metrics for {{ selected_model }} Model:</h2>
+            <p>Precision: {{ metrics.precision }}</p>
+            <p>Recall: {{ metrics.recall }}</p>
+            <p>F1 Score: {{ metrics.f1_score }}</p>
+            <p>Accuracy: {{ metrics.accuracy }}</p>
+        {% endif %}
+        <!-- Display the bar graph -->
+        <img src="/static/bargraph.png" alt="Comparison of SVM and LR Models">
+    {% endif %}
+</div>
+</body>
+{% endblock body %}
